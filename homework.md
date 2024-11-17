@@ -16,3 +16,10 @@
 - Push all the code to remote origin / inside Repository
 - Play with creating a new Routes --> /test, /hello, /, /hello/xyz/abc
 - Order of the routes matters a lot.....
+- Install postman make oue seperate workspace
+- Write logic for GET, POST, DELETE, PATCH
+- Explore routing and use of ?, +, *, (), in the routes.
+- use the regex in route -> /a/, /.*fly$/
+- Reading query and params from the reqest API call.
+- Reading the dynamic route
+
