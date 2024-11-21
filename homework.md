@@ -23,3 +23,14 @@
 - Reading query and params from the reqest API call.
 - Reading the dynamic route
 
+- Create Multiple route handler
+- what is next()
+- next function and error along with res.sen()
+- app.use("/", RouteHandler1, RH2, RH3, RH4, ....);
+- What is middleware? Why do we need it?
+- How Express Js Handles Request behind the screen.
+- Differen app.use() Vs app.all()
+- Write dummy auth middleware for /admin.
+- write dummy auth middleware for /User.
+- Error Handing using app.use("/", ()=> { err, req, res, next})
+
