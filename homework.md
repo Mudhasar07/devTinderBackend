@@ -43,5 +43,11 @@
 - Create User schema and User Model Using Moongose Library
 - Create some POST API / send some document to the database
 - Using Postman push some data to DB
-- Error handling using try{} catch{} methode always.
+- Error handling using try{} catch{} methode always
 
+- Difference between JSON vs Javascript Object
+- Add the express.json middleware to our app, to handle all JSON, and covert to JS Object
+- Make our /signUp API dynamic to receive data from End User
+
+
+`

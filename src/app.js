@@ -3,19 +3,16 @@ const app = express();
 const connectDB = require("./config/database");
 const UserSchema = require("./models/userModel");
 
+app.use(express.json()); // Convert the JSON Notation to JS Object 
 // Route Handler.
 
 app.post("/signUp", async (req, res)=>{
-    const userObject = new UserSchema({
-        firstName: "shifan",
-        lastName: "Ahamed",
-        age: 10,
-        emailid: "shifan@gmail.com",
-        password: "121212",
-        gender: "male"
-    });
+
+    console.log("reqBody", req.body) // Need to pass it as Javascript Object.
+    
+    const userObject = new UserSchema(req.body);
     await userObject.save();
-    res.send("user ceated Successfully")
+    res.send("user Created Succfully");
 
 })
 
