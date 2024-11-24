@@ -23,6 +23,7 @@
 - Reading query and params from the reqest API call.
 - Reading the dynamic route
 
+
 - Create Multiple route handler
 - what is next()
 - next function and error along with res.sen()
@@ -30,7 +31,17 @@
 - What is middleware? Why do we need it?
 - How Express Js Handles Request behind the screen.
 - Differen app.use() Vs app.all()
-- Write dummy auth middleware for /admin.
-- write dummy auth middleware for /User.
+- Write dummy auth middleware for /admin
+- write dummy auth middleware for /User
 - Error Handing using app.use("/", ()=> { err, req, res, next})
+
+
+- Create free cluster on MongoDB on their official website
+- Install mongoose library
+- Connect to the application to data via connection+string 
+- Before Listening to the port connect the DB first then start Listing on port 7777
+- Create User schema and User Model Using Moongose Library
+- Create some POST API / send some document to the database
+- Using Postman push some data to DB
+- Error handling using try{} catch{} methode always.
 
