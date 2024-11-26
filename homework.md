@@ -45,9 +45,18 @@
 - Using Postman push some data to DB
 - Error handling using try{} catch{} methode always
 
+
 - Difference between JSON vs Javascript Object
 - Add the express.json middleware to our app, to handle all JSON, and covert to JS Object
 - Make our /signUp API dynamic to receive data from End User
-
-
-`
+- find user.findone with duplicate email ids, which object returns first, check and explore
+- API - Get user by emailid
+- API - Feed API - Get all user from DB
+- Get - user by ID
+- API - Delete user 
+- Difference b/w PATCH vs PUT
+- API - Update a USER
+- Explore Mongoose documentation for Models methods or function or Model 
+- What are options in Model.findOneAndUpdate
+- API - Update User with email ID
+- 
