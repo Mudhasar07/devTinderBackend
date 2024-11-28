@@ -14,11 +14,18 @@ app.post("/signUp", async (req, res)=>{
         emailId: req.body.emailId,
         password: req.body.password,
         age: req.body.age,
-        gender: req.body.gender
+        gender: req.body.gender,
+        skills: req.body.skills
     }
-    const userObject = new UserSchema(createNewUser);
-    await userObject.save();
-    res.send("user Created Succfully");
+    try{
+        const userObject = new UserSchema(createNewUser);
+        await userObject.save();
+        res.send("user Created Succfully");
+    }
+    catch(err){
+        res.send(err + "while creating new User");
+    }
+    
 })
 
 app.get('/allUser', async (req, res)=> {
@@ -44,12 +51,30 @@ app.post("/userByParam", async (req, res)=> {
     }
 })
 
-app.patch("/updateUser", async (req, res)=>{
+app.patch("/updateUser/:userId", async (req, res)=>{
+    const data = req.body;
+    const userId = req.params.userId
+
     try{
-        const updateUser = await userModel.findOneAndUpdate({_id: req.body.id},{firstName: req.body.firstName}, {returnDocument: 'before'});
+        console.log(req.body,"ddddd")
+        const ALLOWED_UPDATES  = [ "firstName", "lastName", "skills", "password", "emailId"] ;
+        const isUpdateAllowed = Object.keys(data).every((k)=>
+            ALLOWED_UPDATES.includes(k)
+        )
+
+        if(!isUpdateAllowed){
+            throw new Error("Unable to update Manditory field");
+        }
+
+        if(req.body?.skills.length > 10){
+            throw new Error("Skills cannot be more than 10");
+        }
+
+        const updateUser = await userModel.findByIdAndUpdate({_id: userId}, req.body, {returnDocument: "after"});
         res.send(updateUser)
-    }catch(err){
-        res.send(err);
+    }
+    catch(err){
+        res.send("Update Fail Error is --> " + err.message);
     }
 })
 
