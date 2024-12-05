@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const connectDB = require("./config/database");
-const UserSchema = require("./models/userModel");
 const userModel = require('./models/userModel');
 const validator = require('validator');
+const bcrypt = require('bcrypt');
 
 app.use(express.json()); // Convert the JSON Notation to JS Object 
 // Route Handler.
@@ -26,17 +26,20 @@ app.post("/signUp", async (req, res)=>{
             throw new Error("Please valid photo URL")
         }
 
+        const hashPassword = await bcrypt.hash(req.body.password, 10);
+        console.log(hashPassword, " --> I am hashPasssword");
+
         const createNewUser = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             emailId: req.body.emailId,
-            password: req.body.password,
+            password: hashPassword,
             age: req.body.age,
             gender: req.body.gender,
             skills: req.body.skills
         }
 
-        const userObject = new UserSchema(createNewUser);
+        const userObject = new userModel(createNewUser);
         await userObject.save();
         res.send("user Created Succfully");
     }
@@ -44,6 +47,33 @@ app.post("/signUp", async (req, res)=>{
         res.send(err + " while creating new User"); 
     }
 })
+
+app.post("/login", async (req, res)=>{
+    try{
+    const {emailId, password} = req.body;
+    const checkUserExist = await userModel.findOne({emailId: emailId});
+    console.log(checkUserExist, "checkUserExist")
+
+    if(checkUserExist.length < 1){
+        throw new Error ("Not valid Email ID");
+    }
+
+    const userHashPassword = checkUserExist.password
+    console.log(userHashPassword, "userhashpassword");
+
+    const isCheckUserPassword = await bcrypt.compare(password, userHashPassword )
+    console.log(isCheckUserPassword, "ischeckUserhashpass");
+
+    if(!isCheckUserPassword){
+        throw new Error ("Invalid credentail");
+    }
+
+    res.send("Logging In Successfully");
+    }
+    catch(err){
+        res.send(err + " --> While Login");
+    }
+});
 
 app.get('/allUser', async (req, res)=> {
     const allUserRecord = await userModel.find({});
