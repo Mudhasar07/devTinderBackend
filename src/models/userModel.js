@@ -27,10 +27,22 @@ const userSchema = mongoose.Schema({
         min: 4
     },
     gender: {
-        type: String
+        type: String,
+        validate(value){
+            if(!["Male", "Female", "Others"].includes(value)){
+                throw new Error("Gender is not valid");
+            }
+        }
     },
     skills: {
         type: [String]
+    },
+    description:{
+        type: String,
+        default: "Hello I am default Description"
+    },
+    photoUrl:{
+        type: String
     }
 },
 {timestamps: true}

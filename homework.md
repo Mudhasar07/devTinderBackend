@@ -68,3 +68,23 @@
 - Add timestamp to the UserSchema
 - Add API level validation on PATCH request & SignUp POST API
 - Data Sanitizing - Add API validation for each field
+- Download Validator
+- Explore Validator Library function and use validator func for email, strong password, photoURL....
+
+- Validate data in SignUp API
+- Install bcrypt package
+- Create Hash Password using bcrypt Library & save that password to USER collection
+- Create LOGIN API
+- Compare the password and throw valid error (Like invalid credential)
+
+- Install Cookie-Parser
+- Just send Dummy Cookies to USER
+- Create GET /Profile API and Check if you get the Cookies back from Request (req.cookies)
+- Install jsonwebtoken
+- In Login API, after email & Password Validation, create a JWT Token and send it to the USER
+- Read the cookie inside our /Profile API & Find the USER who logged in.
+- Add userAuth Middleware file
+- Add that userAuth Middle in /profile API and create a newConnectionRequestAPI and set the userAuth Middle to it
+- Set the ExpireIn time in JWT token and cookies for 7 days
+- Create userSchema methode to getJWT() --> Use normal function() only
+- Create userSchema methode to VerifyPassword or comparePassword (PasswordInputByUser) to    
