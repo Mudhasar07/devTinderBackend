@@ -5,8 +5,16 @@ const userModel = require('./models/userModel');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 
+const {adminAuth} = require("./middlewares/auth");
+
 app.use(express.json()); // Convert the JSON Notation to JS Object 
 // Route Handler.
+
+app.use("/admin", adminAuth); // Added Middleware
+
+app.get("/admin/getData", (req, res)=>{
+    res.send("get /admin all data")
+})
 
 app.post("/signUp", async (req, res)=>{
     try{

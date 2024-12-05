@@ -29,7 +29,7 @@
 - next function and error along with res.sen()
 - app.use("/", RouteHandler1, RH2, RH3, RH4, ....);
 - What is middleware? Why do we need it?
-- How Express Js Handles Request behind the screen.
+- How Express Js Handles Request behind the scenes.
 - Differen app.use() Vs app.all()
 - Write dummy auth middleware for /admin
 - write dummy auth middleware for /User
