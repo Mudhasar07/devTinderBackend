@@ -44,6 +44,7 @@
 - Create some POST API / send some document to the database
 - Using Postman push some data to DB
 - Error handling using try{} catch{} methode always
+- Error handling using app.use("/", (err, req, res, next)=> {});
 
 
 - Difference between JSON vs Javascript Object

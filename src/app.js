@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const connectDB = require("./config/database");
-const userModel = require('./models/userModel');
-const validator = require('validator');
+const UserModel = require('./models/userModel');
 const bcrypt = require('bcrypt');
+const {validateSignUpData} = require("./utilsOrHelper/validation");
 
 const {adminAuth} = require("./middlewares/auth");
 
@@ -18,22 +18,7 @@ app.get("/admin/getData", (req, res)=>{
 
 app.post("/signUp", async (req, res)=>{
     try{
-        const isValidEmail = validator.isEmail(req.body.emailId)
-        if(!isValidEmail){
-        throw new Error("Invalid Email ID Format")
-        }
-
-        const isStrongPassword = validator.isStrongPassword(req.body.password)
-
-        if(!isStrongPassword){
-            throw new Error("Please Enter some Strong Password");
-        }
-
-        const isPhotoUrl = validator.isURL(req.body.photoUrl);
-        if(!isPhotoUrl){
-            throw new Error("Please valid photo URL")
-        }
-
+        validateSignUpData(req);
         const hashPassword = await bcrypt.hash(req.body.password, 10);
         console.log(hashPassword, " --> I am hashPasssword");
 
@@ -47,7 +32,7 @@ app.post("/signUp", async (req, res)=>{
             skills: req.body.skills
         }
 
-        const userObject = new userModel(createNewUser);
+        const userObject = new UserModel(createNewUser);
         await userObject.save();
         res.send("user Created Succfully");
     }
@@ -59,7 +44,7 @@ app.post("/signUp", async (req, res)=>{
 app.post("/login", async (req, res)=>{
     try{
     const {emailId, password} = req.body;
-    const checkUserExist = await userModel.findOne({emailId: emailId});
+    const checkUserExist = await UserModel.findOne({emailId: emailId});
     console.log(checkUserExist, "checkUserExist")
 
     if(checkUserExist.length < 1){
@@ -84,13 +69,13 @@ app.post("/login", async (req, res)=>{
 });
 
 app.get('/allUser', async (req, res)=> {
-    const allUserRecord = await userModel.find({});
+    const allUserRecord = await UserModel.find({});
     res.send(allUserRecord);
 });
 
 app.get("/userByParam", async (req, res)=> {
     try{
-        const userRecord = await userModel.findOne({firstName: "seeni"});
+        const userRecord = await UserModel.findOne({firstName: "seeni"});
         res.send(userRecord);
     }catch(err){
         res.send(err);
@@ -99,7 +84,7 @@ app.get("/userByParam", async (req, res)=> {
 
 app.post("/userByParam", async (req, res)=> {
     try{
-        const userRecord = await userModel.findOne({firstName: req.body.firstName̵});
+        const userRecord = await UserModel.findOne({firstName: req.body.firstName̵});
         res.send(userRecord);
     }catch(err){
         res.send(err);
@@ -125,7 +110,7 @@ app.patch("/updateUser/:userId", async (req, res)=>{
             throw new Error("Skills cannot be more than 10");
         }
 
-        const updateUser = await userModel.findByIdAndUpdate({_id: userId}, req.body, {returnDocument: "after"});
+        const updateUser = await UserModel.findByIdAndUpdate({_id: userId}, req.body, {returnDocument: "after"});
         res.send(updateUser)
     }
     catch(err){
@@ -135,7 +120,7 @@ app.patch("/updateUser/:userId", async (req, res)=>{
 
 app.delete("/deleteUser/:id", async (req, res) => {
     try{
-        const deleteUser = await userModel.findOneAndDelete({_id: req.params.id})
+        const deleteUser = await UserModel.findOneAndDelete({_id: req.params.id})
         res.send(deleteUser);
     }
     catch(err){
