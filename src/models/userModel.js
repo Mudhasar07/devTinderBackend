@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const jwt = require ("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
     firstName: {
@@ -47,6 +49,22 @@ const UserSchema = new mongoose.Schema({
 },
 {timestamps: true}
 );
+
+UserSchema.methods.getJWTToken = async function () {
+    const user = this;
+    const token = await jwt.sign({_id: user._id}, "mySecretKey", {expiresIn: "7d"});
+    return token;
+}
+
+UserSchema.methods.validateUserHashPassword = async function(pass, hashPass) {
+    // const user = this;
+    // const userHashPassword = user.password;
+    const isValidPassword = await bcrypt.compare(pass, hashPass);
+    if(!isValidPassword){
+        throw new Error("Invalid credentail");
+    }
+    return isValidPassword;
+}
 
 // const UserModel = mongoose.model("Users", userSchema);
 // module.exports = {UserModel}

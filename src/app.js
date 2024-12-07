@@ -50,7 +50,9 @@ app.post("/login", async (req, res)=>{
     const userHashPassword = checkUserExist.password
     console.log(userHashPassword, "userhashpassword");
 
-    const isCheckUserPassword = await bcrypt.compare(password, userHashPassword )
+    // const isCheckUserPassword = await bcrypt.compare(password, userHashPassword )
+    const isCheckUserPassword = await checkUserExist.validateUserHashPassword(password, userHashPassword)
+
     console.log(isCheckUserPassword, "ischeckUserhashpass");
 
     if(!isCheckUserPassword){
@@ -58,8 +60,7 @@ app.post("/login", async (req, res)=>{
     }
 
     // Create JWT Token
-    const token = await jwt.sign({_id: checkUserExist._id}, "mySecretKey", {expiresIn: "1h"});
-    console.log(token, " JWTtoken");
+    const token = await checkUserExist.getJWTToken();
     res.cookie("token", token, { expires: new Date(Date.now() + 1 * 3600000), httpOnly: true });
     res.send("Logging In Successfully");
     }
