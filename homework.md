@@ -85,7 +85,7 @@
 - In Login API, after email & Password Validation, create a JWT Token and send it to the USER
 - Read the cookie inside our /Profile API & Find the USER who logged in.
 - Add userAuth Middleware file
-- Add that userAuth Middle in /profile API and create a newConnectionRequestAPI and set the userAuth Middle to it
-- Set the ExpireIn time in JWT token and cookies for 7 days
+- Add that userAuth Middle in /profile API and create a /newConnectionRequest API and set the userAuth Middle to it
+- Set the ExpireIn time in JWT token and cookies for 8 days
 - Create userSchema methode to getJWT() --> Use normal function() only
 - Create userSchema methode to VerifyPassword or comparePassword (PasswordInputByUser) to    

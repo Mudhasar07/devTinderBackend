@@ -2,20 +2,18 @@ const express = require('express');
 const app = express();
 const connectDB = require("./config/database");
 const UserModel = require('./models/userModel');
-const bcrypt = require('bcrypt');
-const {validateSignUpData} = require("./utilsOrHelper/validation");
-
-const {adminAuth} = require("./middlewares/auth");
-
+const bcrypt = require('bcrypt'); 
+const cookieParser = require('cookie-parser'); // npm i cookie-parser
+const {validateSignUpData} = require("./utilsOrHelper/validation"); // npm i validator
+const jwt = require("jsonwebtoken");
+const {userAuth} = require("./middlewares/auth");
 app.use(express.json()); // Convert the JSON Notation to JS Object 
+app.use(cookieParser()); // Receive the cookies from browser or postman => Collects.
 // Route Handler.
-
-app.use("/admin", adminAuth); // Added Middleware
-
+app.use("/admin", userAuth); // Added Middleware
 app.get("/admin/getData", (req, res)=>{
     res.send("get /admin all data")
 })
-
 app.post("/signUp", async (req, res)=>{
     try{
         validateSignUpData(req);
@@ -34,7 +32,7 @@ app.post("/signUp", async (req, res)=>{
 
         const userObject = new UserModel(createNewUser);
         await userObject.save();
-        res.send("user Created Succfully");
+        res.send("User Created Succfully");
     }
     catch(err){
         res.send(err + " while creating new User"); 
@@ -45,8 +43,6 @@ app.post("/login", async (req, res)=>{
     try{
     const {emailId, password} = req.body;
     const checkUserExist = await UserModel.findOne({emailId: emailId});
-    console.log(checkUserExist, "checkUserExist")
-
     if(checkUserExist.length < 1){
         throw new Error ("Not valid Email ID");
     }
@@ -61,12 +57,39 @@ app.post("/login", async (req, res)=>{
         throw new Error ("Invalid credentail");
     }
 
+    // Create JWT Token
+    const token = await jwt.sign({_id: checkUserExist._id}, "mySecretKey", {expiresIn: "1h"});
+    console.log(token, " JWTtoken");
+    res.cookie("token", token, { expires: new Date(Date.now() + 1 * 3600000), httpOnly: true });
     res.send("Logging In Successfully");
     }
     catch(err){
         res.send(err + " --> While Login");
     }
 });
+
+app.get('/profile', userAuth,  async(req, res) => {
+    try{
+    const user = req.user;
+    res.send("Login User is : " + user);
+    }
+    catch(err){
+    res.send("Catch err " + err.message);
+    }      
+})
+
+app.post("/sendConnectionRequest", userAuth, (req, res)=> {
+    try{
+    const user = req.user;
+    if(!user){
+        throw new Error("invalid user")
+    }
+    res.send(user.firstName + " sent connection request");
+    }
+    catch(err){
+        res.send(err)
+    }
+})
 
 app.get('/allUser', async (req, res)=> {
     const allUserRecord = await UserModel.find({});
