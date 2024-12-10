@@ -71,6 +71,22 @@ UserSchema.methods.destroyJWTToken = async function (req) {
     return destroyToken;
 }
 
+UserSchema.methods.isSameAsOldPassword = async function(res, pass, hashPass) {
+    try{
+    // const user = this;
+    // const userHashPassword = user.password;
+    console.log( "awwwwwwww");
+    const isValidPassword = await bcrypt.compare(pass, hashPass);
+    if(isValidPassword){
+        return true
+    }
+    return isValidPassword;
+    }
+    catch(err){
+        res.status(err.message);
+    }
+}
+
 // const UserModel = mongoose.model("Users", userSchema);
 // module.exports = {UserModel}
 

@@ -99,4 +99,8 @@
 - Group the Multiple Route under the respective routes
 - Read documentation for express.Router()
 - Create Router folder for managing authRoute, profileRoute, requestRoute
-- Import this all routers in APP.JS and do the needed modification.
+- Import this all routers in APP.JS and do the needed modification to work.
+- Create POST /Logout API
+- Create PATCH /profile/edit API
+- Create PATCH /profile/password API => FORGOT Password API.
+- Make sure we validate all data in every POST and PATCH API's

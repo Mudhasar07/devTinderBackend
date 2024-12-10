@@ -32,4 +32,30 @@ const validateSignUpData = (req) => {
     }
 }
 
-module.exports = { validateSignUpData}
+const validateProfileEdit = (req) => {
+    const allowedEditKey = [
+        "firstName",
+        "lastName",
+        "age",
+        "gender",
+        "skills",
+        "photoURL"
+    ]
+    console.log(req.body, "keyys")
+
+    const isEditProfileAllowed = Object.keys(req.body).every((key) =>
+        allowedEditKey.includes(key)
+    )
+    return isEditProfileAllowed;
+}
+
+const validateStrongPassword = (userNewPassword) => {
+    const isStrongPass = validator.isStrongPassword(userNewPassword);
+    return isStrongPass
+}
+
+module.exports = { 
+    validateSignUpData,
+    validateProfileEdit,
+    validateStrongPassword
+}
