@@ -16,7 +16,7 @@
 - Push all the code to remote origin / inside Repository
 - Play with creating a new Routes --> /test, /hello, /, /hello/xyz/abc
 - Order of the routes matters a lot.....
-- Install postman make oue seperate workspace
+- Install postman make our seperate workspace
 - Write logic for GET, POST, DELETE, PATCH
 - Explore routing and use of ?, +, *, (), in the routes.
 - use the regex in route -> /a/, /.*fly$/
@@ -61,8 +61,9 @@
 - What are options in Model.findOneAndUpdate
 - API - Update User with email ID
 
+
 - Explore schematype options from the documentation
-- add require, unique, min, loercase, minLength, trim
+- add require, unique, min, lowercase, minLength, trim
 - Add default
 - Create a cusomer validation function for gender
 - Improve the DB Schema - Put all appropriate validation on each field in schema
@@ -72,11 +73,13 @@
 - Download Validator
 - Explore Validator Library function and use validator func for email, strong password, photoURL....
 
+
 - Validate data in SignUp API
 - Install bcrypt package
 - Create Hash Password using bcrypt Library & save that password to USER collection
 - Create LOGIN API
 - Compare the password and throw valid error (Like invalid credential)
+
 
 - Install Cookie-Parser
 - Just send Dummy Cookies to USER
@@ -88,4 +91,12 @@
 - Add that userAuth Middle in /profile API and create a /newConnectionRequest API and set the userAuth Middle to it
 - Set the ExpireIn time in JWT token and cookies for 8 days
 - Create userSchema methode to getJWT() --> Use normal function() only
-- Create userSchema methode to VerifyPassword or comparePassword (PasswordInputByUser) to    
+- Create userSchema methode to comparePassword (PasswordInputByUser)
+
+
+- Explore Tinder webside
+- create a API List which we observed from Tinder Website
+- Group the Multiple Route under the respective routes
+- Read documentation for express.Router()
+- Create Router folder for managing authRoute, profileRoute, requestRoute
+- Import this all routers in APP.JS and do the needed modification.

@@ -66,6 +66,11 @@ UserSchema.methods.validateUserHashPassword = async function(pass, hashPass) {
     return isValidPassword;
 }
 
+UserSchema.methods.destroyJWTToken = async function (req) {
+    const destroyToken = jwt.destroy(res.cookie.token);
+    return destroyToken;
+}
+
 // const UserModel = mongoose.model("Users", userSchema);
 // module.exports = {UserModel}
 
