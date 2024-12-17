@@ -103,4 +103,18 @@
 - Create POST /Logout API
 - Create PATCH /profile/edit API
 - Create PATCH /profile/password API => FORGOT Password API.
-- Make sure we validate all data in every POST and PATCH API's
+- Make sure we do validate all data in every POST and PATCH API's
+
+- Create connection Request Schema.
+- Add all possible validation.
+- Send connection request to => toUserId.
+- $or and $and query -> Read more about it.
+- what is compund indexes -> Read this articles -> https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/
+- why do we need indexes?
+- What is the advantages and disadvantages of creating indexes?
+- Logical & comparison Query => https://www.mongodb.com/docs/manual/reference/operator/query/or/
+- Schema.pre("save") function => will call these fn automatically before .save 
+- Always think about the corner case
+
+
+- Always add Validation & Create POST API -> /request/review/:status/:requestID
