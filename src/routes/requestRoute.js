@@ -60,4 +60,33 @@ requestRoute.post("/send/:status/:toUserId", userAuth, async (req, res)=> {
     }
 })
 
+requestRoute.post("/request/review/:status/:requestId", userAuth, async (req, res, next) => {
+    try{
+        const LoggedInUser = req.user;
+        const {status, requestId} = req.params;
+        const allowedStataus = ["Accepted", "Rejected" ];
+
+        if(!allowedStataus.includes(status)){
+            return res.status(400).json({Message: `status ${status} is not valid`});
+        }
+
+        const reviewConnection = await RequestModel.findOne({
+            requestStatus: "Interested",
+            _id: requestId,
+            toUserId: LoggedInUser._id
+        });
+
+        if(!reviewConnection){
+            return res.status(400).json({Message: `Review Request not found`});
+        }
+
+        reviewConnection.requestStatus = status;
+        const acceptConnectionData = await reviewConnection.save();
+        return res.status(200).json({Message: `connection status ${status}.`, acceptConnectionData });
+    }
+    catch(err){
+        return res.status(400).json({message: `Err while Review Requeste: ${err.message}`});
+    }
+})
+
 module.exports = requestRoute;

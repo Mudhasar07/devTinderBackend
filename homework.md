@@ -117,4 +117,4 @@
 - Always think about the corner case
 
 
-- Always add Validation & Create POST API -> /request/review/:status/:requestID
+- Always add Validation to the API & Create POST API -> /request/review/:status/:requestID

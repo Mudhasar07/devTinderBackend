@@ -11,14 +11,15 @@
 - PATCH /profile/password => Forgot password API
 
 ## connectionRouter
-- POST /request/send/interest/:userId
-- POST /request/send/ignore/:userId
-- POST /request/view/accept/:requestId
-- POST /request/view/reject/:requestId
+- POST /request/send/:Interest/:userId
+- POST /request/send/:Ignored/:userId
+
+- POST /request/view/:Accepted/:requestId
+- POST /request/view/:Rejected/:requestId
 
 ## userRoute
-- GET /user/connection/request
+- GET /user/request/received
 - GET /request/received
 - GET /feed
 
-- Status = ["interested", "Ignored", "Accepted", "Rejected"]
+- Status = ["Interested", "Ignored", "Accepted", "Rejected"]
