@@ -35,8 +35,8 @@ authRoute.post("/login", async (req, res)=>{
     try{
     const {emailId, password} = req.body;
     const checkUserExist = await UserModel.findOne({emailId: emailId});
-    if(checkUserExist.length < 1){
-        throw new Error ("Not valid Email ID");
+    if(checkUserExist == null || checkUserExist.length < 1){
+        return res.status(404).json({Message: `Invalid Credentail`})
     }
 
     const userHashPassword = checkUserExist.password

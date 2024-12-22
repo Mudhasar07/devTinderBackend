@@ -19,7 +19,7 @@
 
 ## userRoute
 - GET /user/request/received
-- GET /request/received
-- GET /feed
+- GET /user/connections
+- GET /user/feed
 
 - Status = ["Interested", "Ignored", "Accepted", "Rejected"]

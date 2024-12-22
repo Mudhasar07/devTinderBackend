@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const RequestSchema = new mongoose.Schema({
     fromUserId: {
         type: mongoose.Schema.Types.ObjectId,
-        require: true
+        require: true,
+        ref: "Users"
     },
     toUserId:{
         type: mongoose.Schema.Types.ObjectId,
-        require: true
+        require: true,
+        ref: "Users"
     },
     requestStatus: {
         type: String,

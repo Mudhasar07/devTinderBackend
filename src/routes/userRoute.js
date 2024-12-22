@@ -1,6 +1,11 @@
 const express = require('express');
 const userRoute = express.Router();
 const UserModel = require("../models/userModel");
+const { userAuth } = require('../middlewares/auth');
+const RequestModel = require("../models/requestModel");
+
+// User Safe Data - Sending in API Response => Required Field Only to send => Avoiding Unnessary Key: Fields
+const userResponseFields = "firstName lastName skills age gender emailId"
 
 userRoute.get('/allUser', async (req, res)=> {
     const allUserRecord = await UserModel.find({});
@@ -63,10 +68,68 @@ userRoute.delete("/deleteUser/:id", async (req, res) => {
 
 });
 
+// All Main Route related to DEV-Tinder-Project..
+
+userRoute.get("/user/request/received", userAuth, async (req, res) => {
+    try{
+        const loggedInUser = req.user;
+
+        const getAllConnectionRequest = await RequestModel.find({
+            requestStatus: "Interested",
+            toUserId: loggedInUser._id
+        // }).populate("fromUserId", ["firstName", "lastName", "age", "gender"]) 
+        }).populate("fromUserId", "firstName lastName age gender skills description"); // Populate using REF from Models and fetching the USER data
+
+
+        if(!getAllConnectionRequest.length < 0){
+            return res.status(404).json({Message: `No Requested Found`});
+        }
+
+        if(!getAllConnectionRequest.length < 0){
+            return res.status(404).json({Message: `No Requested Found`});
+        }
+
+        return res.status(200).json({Message: `The Received connection requests are: `, getAllConnectionRequest});
+    }
+    catch (err){
+        return res.status(400).json({Message: `Error While getting user received request: ${err.message}`});
+    }
+});
+
+userRoute.get("/user/connections", userAuth, async (req, res)=> {
+    try{
+        const loggedInUser = req.user;
+        const findAllConnections = await RequestModel.find({
+            $or: [
+                {requestStatus: "Accepted", toUserId: loggedInUser._id},
+                {requestStatus: "Accepted", fromUserId: loggedInUser._id }
+            ]
+        })
+        .populate("fromUserId", userResponseFields)
+        .populate("toUserId", userResponseFields);
+        // .populate("fromUserId", ["firstName", "lastName", "skills", "age"]);
+        if(findAllConnections.length < 1){
+            return res.status(400).json({Message: `No Connection Found.`})
+        }
+
+        const data = findAllConnections.map(acceptedUser => {
+            if(acceptedUser.fromUserId._id.toString() === loggedInUser._id.toString()){
+                return acceptedUser.toUserId
+            }
+                return acceptedUser.fromUserId
+        })
+        return res.status(200).json({Message: `Connection Requests Found successfully`, data});
+    }
+    catch(err){
+        return res.send(400).json({Message: `Error While fetch Connections Request.`});
+    }
+});
+
+
 // // Route Handler.
 // app.use("/admin", userAuth); // Added Middleware
 // app.get("/admin/getData", (req, res)=>{
 //     res.send("get /admin all data")
 // })
 
-module.exports = userRoute
+module.exports = userRoute;

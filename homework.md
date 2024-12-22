@@ -118,3 +118,7 @@
 
 
 - Always add Validation to the API & Create POST API -> /request/review/:status/:requestID
+- Thought process -> About POST & GET API -> We are the Gate Keeper, Check everything While enter as well as Leaving out.
+- Read More about REF and POPULATE -> https://mongoosejs.com/docs/populate.html
+- Create GET -> /user/request/received -> Whith all check and its Cornor case.
+- Create GET -> /user/connected -> User Checking -> Conneted with whom.. (Who all accepted the Sent Request).
