@@ -5,7 +5,7 @@ const { userAuth } = require('../middlewares/auth');
 const RequestModel = require("../models/requestModel");
 
 // User Safe Data - Sending in API Response => Required Field Only to send => Avoiding Unnessary Key: Fields
-const userResponseFields = "firstName lastName skills age gender emailId"
+const usersafeData = "firstName lastName skills age gender emailId"
 
 userRoute.get('/allUser', async (req, res)=> {
     const allUserRecord = await UserModel.find({});
@@ -105,8 +105,8 @@ userRoute.get("/user/connections", userAuth, async (req, res)=> {
                 {requestStatus: "Accepted", fromUserId: loggedInUser._id }
             ]
         })
-        .populate("fromUserId", userResponseFields)
-        .populate("toUserId", userResponseFields);
+        .populate("fromUserId", usersafeData)
+        .populate("toUserId", usersafeData);
         // .populate("fromUserId", ["firstName", "lastName", "skills", "age"]);
         if(findAllConnections.length < 1){
             return res.status(400).json({Message: `No Connection Found.`})
@@ -122,6 +122,44 @@ userRoute.get("/user/connections", userAuth, async (req, res)=> {
     }
     catch(err){
         return res.send(400).json({Message: `Error While fetch Connections Request.`});
+    }
+});
+
+userRoute.get("/feed", userAuth, async (req, res)=> {
+    try{
+        loggedInUser = req.user;
+        const {_id, fromUserId, toUserId} = loggedInUser;
+
+        const hideUsersFromFeedAPi = await RequestModel.find({
+            $or:[
+                {fromUserId: _id},
+                {toUserId: _id}
+            ]
+        })
+        .select('fromUserId toUserId requestStatus')
+        .populate("fromUserId", "firstName lastName emailId")
+        .populate("toUserId", "firstName lastName emailId")
+
+        // Find All Unique USER => Remove duplicate USER 
+        const hideUserUniqueIdList = new Set();
+
+        hideUsersFromFeedAPi.forEach(users => {
+            hideUserUniqueIdList.add(users.fromUserId._id.toString())
+            hideUserUniqueIdList.add(users.toUserId._id.toString())
+        });
+        console.log(hideUserUniqueIdList, "hideUsersList")
+
+        const listUserFeed = await UserModel.find({
+            $and: [
+                {_id: {$nin: Array.from(hideUserUniqueIdList)}},
+                {_id: {$ne: _id}}
+            ]
+        }).select(usersafeData);
+
+        res.status(200).json({dataa: listUserFeed});
+    }
+    catch(err){
+        res.status(400).json({ErrMessage: err.message})
     }
 });
 

@@ -33,7 +33,7 @@ requestRoute.post("/send/:status/:toUserId", userAuth, async (req, res)=> {
                 {fromUserId: toUserId, toUserId: fromUserId}
             ]
         })
-        console.log(isRequestAlreadySent.length, "isRequestAlreadySent")
+        console.log(isRequestAlreadySent.length, "isRequestAlreadySent");
 
         if(isRequestAlreadySent.length > 0){
             return res.status(400).json({
@@ -51,7 +51,7 @@ requestRoute.post("/send/:status/:toUserId", userAuth, async (req, res)=> {
         // Pre function we can use => Before Save, Automatically PRE function can execute. We can write this function inside our Models.
         await createNewRequest.save();
         return res.status(200).json({
-            Message: `Request Sent Successfully to ${user.firstName}`,
+            Message: `Connection status ${requestStatus} sent to ${user.firstName}`,
             Data: createNewRequest
         })
     }

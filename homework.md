@@ -105,6 +105,7 @@
 - Create PATCH /profile/password API => FORGOT Password API.
 - Make sure we do validate all data in every POST and PATCH API's
 
+
 - Create connection Request Schema.
 - Add all possible validation.
 - Send connection request to => toUserId.
@@ -122,3 +123,8 @@
 - Read More about REF and POPULATE -> https://mongoosejs.com/docs/populate.html
 - Create GET -> /user/request/received -> Whith all check and its Cornor case.
 - Create GET -> /user/connected -> User Checking -> Conneted with whom.. (Who all accepted the Sent Request).
+
+
+- Create GET API -> /user/feeds
+- Explore Comparison operator -> $nin, $and, $ne and others operators.
+
