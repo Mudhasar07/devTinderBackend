@@ -127,4 +127,15 @@
 
 - Create GET API -> /user/feeds
 - Explore Comparison operator -> $nin, $and, $ne and others operators.
+- Documenatation -> https://www.mongodb.com/docs/v6.2/reference/operator/query/nin/
+
+
+- Pagination NOTES:
+- /feed?page=1&limit=10 => 1-10 Users (First 10 users)
+- /feed?page=2&limit=20 => 11-20 Users
+- /feed?page=3&limit=30 => 21-30 Users
+- /feed?page=4&limit=40 => 31-40 Users
+- Pagination Formula => let page = 1, let limit = 10 => Do Validate limit in Backend
+- .skip() => (page - 1) * limit;
+- .limit() => limit
 

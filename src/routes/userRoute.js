@@ -35,7 +35,6 @@ userRoute.patch("/updateUser/:userId", async (req, res)=>{
     const userId = req.params.userId
 
     try{
-        console.log(req.body,"ddddd")
         const ALLOWED_UPDATES  = [ "firstName", "lastName", "skills", "password", "emailId"] ;
         const isUpdateAllowed = Object.keys(data).every((k)=>
             ALLOWED_UPDATES.includes(k)
@@ -128,7 +127,13 @@ userRoute.get("/user/connections", userAuth, async (req, res)=> {
 userRoute.get("/feed", userAuth, async (req, res)=> {
     try{
         loggedInUser = req.user;
-        const {_id, fromUserId, toUserId} = loggedInUser;
+        const {_id} = loggedInUser;
+        const page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+        const skip = ( page - 1) * limit
+        if(limit > 50){
+            limit = 50;
+        }
 
         const hideUsersFromFeedAPi = await RequestModel.find({
             $or:[
@@ -147,16 +152,18 @@ userRoute.get("/feed", userAuth, async (req, res)=> {
             hideUserUniqueIdList.add(users.fromUserId._id.toString())
             hideUserUniqueIdList.add(users.toUserId._id.toString())
         });
-        console.log(hideUserUniqueIdList, "hideUsersList")
+        // console.log(hideUserUniqueIdList, "hideUsersList")
 
         const listUserFeed = await UserModel.find({
             $and: [
                 {_id: {$nin: Array.from(hideUserUniqueIdList)}},
                 {_id: {$ne: _id}}
             ]
-        }).select(usersafeData);
+        }).select(usersafeData)
+        .skip(skip)
+        .limit(limit);
 
-        res.status(200).json({dataa: listUserFeed});
+        return res.status(200).json({dataa: listUserFeed});
     }
     catch(err){
         res.status(400).json({ErrMessage: err.message})

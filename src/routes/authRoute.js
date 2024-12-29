@@ -19,7 +19,8 @@ authRoute.post("/signUp", async (req, res)=>{
             password: hashPassword,
             age: req.body.age,
             gender: req.body.gender,
-            skills: req.body.skills
+            skills: req.body.skills,
+            description: req.body.description
         }
 
         const userObject = new UserModel(createNewUser);
